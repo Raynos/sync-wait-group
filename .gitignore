@@ -67,3 +67,5 @@ static/translations-s3/
 ###############
 .nyc_output/
 package-lock.json
+
+!build/src/index.js
