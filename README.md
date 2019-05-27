@@ -13,7 +13,7 @@ A port of golang sync.WaitGroup
 ## Example
 
 ```js
-const WaitGroup = require("sync-wait-group");
+const WaitGroup = require("sync-wait-group").WaitGroup;
 
 async function main() {
     const wg = new WaitGroup();
