@@ -13,16 +13,102 @@ A port of golang sync.WaitGroup
 ## Example
 
 ```js
-const syncWaitGroup = require("sync-wait-group").syncWaitGroup;
+const WaitGroup = require("sync-wait-group");
 
-// TODO. Show example
+async function main() {
+    const wg = new WaitGroup();
+    let n = 0;
+
+    wg.add(1);
+    (async () => {
+        n++;
+        wg.done();
+    })();
+
+    wg.add(1);
+    (async () => {
+        n++;
+        wg.done();
+    })();
+
+    await wg.wait();
+    cassert.equal(n, 2);
+}
 ```
 
 ## Docs
 
-### `const someValue = syncWaitGroup(/*arguments*/)`
+### `const wg = new WaitGroup()`
 
-// TODO. State what the module does.
+Creates a wait group instance. This instance contains a cached
+promise that is used when `wait()` is called so once the waitgroup
+is finished this object cannot be re-used.
+
+It's safe to call `wait()` if you do not call `add()` ; aka the
+internal counter === 0.
+
+It's safe to call `wait()` multiple times.
+It's safe to call `wait()` after `done()` has been called and
+the waitgroup is already finished.
+
+This pattern is considered better then creating a `Deferred`
+
+```js
+// Instead of using deferred use WaitGroup
+const d = new Deferred();
+
+(async () => {
+    d.resolve();
+})();
+
+await d.promise();
+
+// This is preferred as it's more clear what your intent is.
+// When you use deferred it's confusing why you didn't use
+// new Promise((resolve, reject) => { ... }) instead.
+const wg = new WaitGroup();
+wg.add(1);
+
+(async () => {
+    wg.done();
+})();
+
+await wg.wait();
+```
+
+### `wg.add(n)`
+
+Increments the counter of pending work that your waiting for by
+N.
+
+If your waiting for a single event you can call `wg.add(1)`
+
+If your implementing fanout or scatter gather then you can call
+`wg.add(number_of_tasks)`
+
+If you call `add()` after the waitgroup is finished, aka the
+internal counter has been decremented to `0` by `done()` then
+an exception is thrown.
+
+### `wg.done()`
+
+Call `done()` to notify that a piece of work your waiting for
+has completed. This will decrement the internal counter by 1.
+
+If the counter is `0` then all the promises returned from
+`wg.wait()` will resolve successfully.
+
+If calling `done()` would make the counter negative then an
+exception is thrown.
+
+### `const promise = wg.wait()`
+
+Returns a cached `Promise` that resolves once the wg has finished.
+This happens when `done()` has been called enough to decrement
+the counter increased by `add(n)`.
+
+If you call `wait()` without calling `add()` or `done()` then
+it returns a resolved promise.
 
 ## Installation
 
