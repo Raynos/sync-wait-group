@@ -36,6 +36,7 @@ declare namespace tape {
      * Generate a new test that will be skipped over.
      */
     function skip(name: string | TestOptions, cb: TestCase): void;
+    function skip(name: string): void;
     function skip(name: string, opts: TestOptions, cb: TestCase): void;
     function skip(cb: TestCase): void;
 
