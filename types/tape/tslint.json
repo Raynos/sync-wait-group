@@ -2,5 +2,8 @@
   "extends": [
     "dtslint/dtslint.json",
     "../../tslint.json"
-  ]
+  ],
+  "rules": {
+    "unified-signatures": false
+  }
 }
