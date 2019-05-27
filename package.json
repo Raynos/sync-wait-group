@@ -1,0 +1,51 @@
+{
+  "name": "sync-wait-group",
+  "version": "1.0.0",
+  "description": "A port of golang sync.WaitGroup",
+  "keywords": [],
+  "author": "Raynos <raynos2@gmail.com>",
+  "repository": "git://github.com/Raynos/sync-wait-group.git",
+  "main": "index",
+  "homepage": "https://github.com/Raynos/sync-wait-group",
+  "bugs": {
+    "url": "https://github.com/Raynos/sync-wait-group/issues",
+    "email": "raynos2@gmail.com"
+  },
+  "contributors": [
+    {
+      "name": "Raynos"
+    }
+  ],
+  "devDependencies": {
+    "@types/node": "12.0.2",
+    "dtslint": "github:Raynos/dtslint#v0.7.6-pin-typescript-2",
+    "nyc": "13.3.0",
+    "opn": "1.0.1",
+    "tape": "3.4.0",
+    "tslint": "5.16.0",
+    "tslint-microsoft-contrib": "6.2.0",
+    "type-coverage": "2.0.1",
+    "typescript": "3.4.5"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://github.com/Raynos/sync-wait-group/raw/master/LICENSE"
+    }
+  ],
+  "scripts": {
+    "test": "npm run build && npm run tslint -s && npm run cover -s && npm run check -s",
+    "unit-test": "node build/test/index.js",
+    "build": "tsc --pretty -p .",
+    "tslint": "tslint -t stylish -p .",
+    "cover": "nyc --exclude build/test/**/*.js --reporter=html -- node ./build/test/index.js && nyc report",
+    "check": "npm run check-cover -s && npm run type-coverage -s && npm run lint-types -s && npm run verify -s",
+    "verify": "npm run verify-included -s",
+    "lint-types": "command ls ./types/ | xargs -I{} sh -c 'dtslint ./types/{} && echo linted types/{}'",
+    "type-coverage": "type-coverage --detail --strict --ignore-catch --at-least 100",
+    "check-cover": "nyc check-coverage --branches=100 --lines=100 --functions=100",
+    "verify-included": "bash scripts/verify-included.sh",
+    "view-cover": "opn ./coverage/index.html"
+  },
+  "ngen-version": "5.1.0"
+}
