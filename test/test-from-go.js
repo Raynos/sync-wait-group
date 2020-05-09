@@ -27,10 +27,9 @@ function rethrow (err) {
 async function testWaitGroup (assert, wg1, wg2) {
   const n = 16
 
-  /**
-   * @type {boolean[]}
-   */
+  /** @type {boolean[]} */
   const exitedArr = []
+  /** @type {Promise<void>[]} */
   const promises = []
   wg1.add(n)
   wg2.add(n)
