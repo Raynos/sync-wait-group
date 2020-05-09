@@ -4,7 +4,10 @@ const test = require('@pre-bundled/tape')
 
 const { WaitGroup } = require('../index')
 
-process.on('unhandledRejection', (err) => { throw err })
+process.on('unhandledRejection', (maybeErr) => {
+  const err = /** @type {Error} */ (maybeErr)
+  throw err
+})
 
 test('create WG and add', (assert) => {
   const wg = new WaitGroup()
@@ -17,6 +20,7 @@ test('create WG and add', (assert) => {
     finished = true
   })()
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   const p2 = (async () => {
     assert.equal(finished, false)
     wg.done()
@@ -42,6 +46,7 @@ test('Add twice and done', (assert) => {
     finished = true
   })()
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   const p2 = (async () => {
     assert.equal(finished, false)
     wg.done()
@@ -67,6 +72,7 @@ test('Call done without add', (assert) => {
 
   /**
    * @param {Error} err
+   * @returns {void}
    */
   function uncaught (err) {
     assert.ok(err)
@@ -105,6 +111,7 @@ test('Call add after done', (assert) => {
     finished = true
   })()
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   const p2 = (async () => {
     assert.equal(finished, false)
     wg.done()
@@ -118,8 +125,8 @@ test('Call add after done', (assert) => {
     }, null)
 
   /**
-   *
    * @param {Error} err
+   * @returns {void}
    */
   function uncaught (err) {
     assert.ok(err)
@@ -150,6 +157,7 @@ test('Double call wait after done', (assert) => {
     finishedCounters[1] = true
   })()
 
+  // eslint-disable-next-line @typescript-eslint/require-await
   const p3 = (async () => {
     wg.done()
   })()

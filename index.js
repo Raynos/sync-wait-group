@@ -4,46 +4,25 @@
 const RESOLVED_PROMISE = Promise.resolve()
 
 class WaitGroup {
-  constructor /**
-               *
-               */
   /**
-   *
+   * @constructor
    */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
- *
- */
-/**
- *
- */
-() {
+  constructor () {
+    /** @type {number} */
     this.counter = 0
+    /** @type {number} */
     this.waitCounter = 0
+    /** @type {Promise<void> | null} */
     this.waitPendingPromise = null
+    /** @type {(() => void) | null} */
     this.waitPendingResolve = null
+    /** @type {boolean} */
     this.finished = false
   }
 
   /**
    * @param {number} delta
+   * @returns {void}
    */
   add (delta) {
     if (this.finished) {
@@ -65,71 +44,17 @@ class WaitGroup {
     this.notify()
   }
 
-  done /**
-        *
-        */
   /**
-   *
+   * @returns {void}
    */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
- *
- */
-/**
- *
- */
-() {
+  done () {
     this.add(-1)
   }
 
-  wait /**
-        *
-        */
   /**
-   *
+   * @returns {Promise<void>}
    */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
- *
- */
-/**
- *
- */
-() {
+  wait () {
     if (this.counter === 0) {
       return RESOLVED_PROMISE
     }
@@ -146,37 +71,10 @@ class WaitGroup {
     return this.waitPendingPromise
   }
 
-  notify /**
-          *
-          */
   /**
-   *
+   * @returns {void}
    */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
-   *
-   */
-  /**
- *
- */
-/**
- *
- */
-() {
+  notify () {
     if (this.waitPendingResolve) {
       const waitPendingResolve = this.waitPendingResolve
       this.waitPendingResolve = null
@@ -188,6 +86,7 @@ exports.WaitGroup = WaitGroup
 
 /**
  * @param {string} message
+ * @returns {void}
  */
 function panic (message) {
   const error = new Error(message)

@@ -5,10 +5,14 @@ const CollapsedAssert = require('collapsed-assert')
 
 const { WaitGroup } = require('../index.js')
 
-process.on('unhandledRejection', (err) => { throw err })
+process.on('unhandledRejection', (maybeErr) => {
+  const err = /** @type {Error} */ (maybeErr)
+  throw err
+})
 
 /**
  * @param {Error} err
+ * @returns {void}
  */
 function rethrow (err) {
   process.nextTick(() => { throw err })
@@ -18,13 +22,14 @@ function rethrow (err) {
  * @param {CollapsedAssert} assert
  * @param {WaitGroup} wg1
  * @param {WaitGroup} wg2
+ * @returns {Promise<void>}
  */
 async function testWaitGroup (assert, wg1, wg2) {
   const n = 16
 
   /**
-     * @type {boolean[]}
-     */
+   * @type {boolean[]}
+   */
   const exitedArr = []
   const promises = []
   wg1.add(n)
@@ -77,6 +82,7 @@ test('TestWaitGroupMisuse', (assert) => {
 
   /**
    * @param {Error} err
+   * @returns {void}
    */
   function uncaught (err) {
     process.removeListener('uncaughtException', uncaught)
@@ -94,12 +100,14 @@ test('TestWaitGroupRace', async (assert) => {
     let n = 0
 
     wg.add(1);
+    // eslint-disable-next-line @typescript-eslint/require-await
     (async () => {
       n++
       wg.done()
     })().catch(rethrow)
 
     wg.add(1);
+    // eslint-disable-next-line @typescript-eslint/require-await
     (async () => {
       n++
       wg.done()
