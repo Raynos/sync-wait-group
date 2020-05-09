@@ -14,7 +14,7 @@ declare function tape(cb: tape.TestCase): void;
 
 declare namespace tape {
     interface TestCase {
-        (test: Test): void;
+        (test: Test): void | Promise<void>;
     }
 
     /**

@@ -5,7 +5,7 @@
   "keywords": [],
   "author": "Raynos <raynos2@gmail.com>",
   "repository": "git://github.com/Raynos/sync-wait-group.git",
-  "main": "build/src/index.js",
+  "main": "index.js",
   "homepage": "https://github.com/Raynos/sync-wait-group",
   "bugs": {
     "url": "https://github.com/Raynos/sync-wait-group/issues",
@@ -16,17 +16,16 @@
       "name": "Raynos"
     }
   ],
+  "binDependencies": {
+    "tsdocstandard": "15.2.2",
+    "type-coverage": "2.4.3",
+    "typescript": "3.8.3"
+  },
   "devDependencies": {
-    "@types/node": "12.0.2",
+    "@pre-bundled/tape": "5.0.0",
+    "@types/node": "13.13.4",
     "collapsed-assert": "1.0.3",
-    "dtslint": "github:Raynos/dtslint#v0.7.6-pin-typescript-2",
-    "nyc": "13.3.0",
-    "opn": "1.0.1",
-    "tape": "4.10.2",
-    "tslint": "5.16.0",
-    "tslint-microsoft-contrib": "6.2.0",
-    "type-coverage": "2.0.1",
-    "typescript": "3.4.5"
+    "npm-bin-deps": "1.7.0"
   },
   "licenses": [
     {
@@ -35,19 +34,10 @@
     }
   ],
   "scripts": {
-    "test": "npm run build && npm run tslint -s && npm run cover -s && npm run check -s",
-    "unit-test": "node build/test/index.js",
-    "build": "tsc --pretty -p .",
-    "build:watch": "tsc --pretty -p . -w",
-    "tslint": "tslint -t stylish -p .",
-    "cover": "nyc --exclude build/test/**/*.js --reporter=html -- node ./build/test/index.js && nyc report",
-    "check": "npm run check-cover -s && npm run type-coverage -s && npm run lint-types -s && npm run verify -s",
-    "verify": "npm run verify-included -s",
-    "lint-types": "command ls ./types/ | xargs -I{} sh -c 'dtslint ./types/{} && echo linted types/{}'",
-    "type-coverage": "type-coverage --detail --strict --ignore-catch --at-least 100",
-    "check-cover": "nyc check-coverage --branches=100 --lines=100 --functions=100",
-    "verify-included": "bash scripts/verify-included.sh",
-    "view-cover": "opn ./coverage/index.html"
+    "check": "npr tsc -p .",
+    "lint": "npr tsdocstandard -v",
+    "test": "npm run check && npm run lint && node test/index.js && npm run type-coverage",
+    "type-coverage": "npr type-coverage --detail --strict --ignore-catch --at-least 100"
   },
   "ngen-version": "5.1.0"
 }
