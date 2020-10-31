@@ -18,14 +18,14 @@
   ],
   "binDependencies": {
     "tsdocstandard": "15.2.2",
-    "type-coverage": "2.4.3",
-    "typescript": "3.8.3"
+    "type-coverage": "2.14.2",
+    "typescript": "4.0.5"
   },
   "devDependencies": {
     "@pre-bundled/tape": "5.0.0",
     "@types/node": "13.13.4",
     "collapsed-assert": "1.0.3",
-    "npm-bin-deps": "1.7.0"
+    "npm-bin-deps": "1.10.1"
   },
   "licenses": [
     {
@@ -33,11 +33,18 @@
       "url": "http://github.com/Raynos/sync-wait-group/raw/master/LICENSE"
     }
   ],
+  "typeCoverage": {
+    "detail": true,
+    "strict": true,
+    "ignoreUnread": true,
+    "ignoreCatch": true,
+    "atLeast": 100,
+    "project": "jsconfig.json"
+  },
   "scripts": {
-    "check": "npr tsc -p .",
+    "tsc": "npr tsc -p jsconfig.json --maxNodeModuleJsDepth 0",
     "lint": "npr tsdocstandard -v",
-    "test": "npm run check && npm run lint && node test/index.js && npm run type-coverage",
-    "type-coverage": "npr type-coverage --detail --strict --ignore-catch --at-least 100"
+    "test": "npm run tsc && npm run lint && node test/index.js && npr type-coverage"
   },
   "ngen-version": "5.1.0"
 }
