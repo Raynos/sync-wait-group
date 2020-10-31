@@ -17,7 +17,7 @@
     }
   ],
   "binDependencies": {
-    "tsdocstandard": "15.2.2",
+    "tsdocstandard": "github:Raynos/tsdocstandard#standard16",
     "type-coverage": "2.14.2",
     "typescript": "4.0.5"
   },
